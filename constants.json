@@ -1,0 +1,64 @@
+{
+	"app": {
+		"name": "LoadBridge",
+		"description": "Automating the flow of Walmart freight tenders into SHV TMS."
+	},
+	"integration": {
+		"account_email": "vaishnavirkekuda@gmail.com",
+		"walmart_loads_url": "https://wmt-freight-portal.vercel.app/api/sap/loads",
+		"shv_loads_url": "https://shv-logistics-tms.vercel.app/api/sor/loads",
+		"request_timeout_seconds": 15
+	},
+	"actions": {
+		"fetch_loads": "Fetch Loads",
+		"sanitize_push": "Sanitize & Push"
+	},
+	"ui": {
+		"eyebrow": "SHV Logistics / Operations Console",
+		"header_note": "Open tenders · controlled push workflow",
+		"records_title": "Open freight tenders",
+		"records_note": "Raw tenders from Walmart Freight Order Monitor",
+		"help_label": "View workflow steps",
+		"workflow_steps": [
+			"Fetch open Walmart tenders.",
+			"Review the tender records shown in the table.",
+			"Sanitize dates, weights, and equipment mapping.",
+			"Push the prepared loads to SHV TMS.",
+			"Review the accepted or rejected load response."
+		],
+		"status_loading": "Loading...",
+		"status_success": "Completed",
+		"status_error": "Error",
+		"empty_state": "Click on Fetch loads to begin.",
+		"no_loads": "No loads returned.",
+		"fetched": "Fetched",
+		"sanitized": "Sanitized",
+		"pushed": "Pushed",
+		"rejected": "Rejected",
+		"error_prefix": "Error:",
+		"results_heading": "Push results",
+		"results_accepted_suffix": "accepted",
+		"pushed_label": "Pushed",
+		"rejected_label": "Rejected",
+		"sent_label": "Sent to TMS:",
+		"columns": {
+			"load": "Load No.",
+			"freight_order": "Freight Order No.",
+			"shipper": "Shipper",
+			"origin_city": "Origin City",
+			"origin_state": "Origin State",
+			"destination_city": "Destination City",
+			"destination_state": "Destination State",
+			"ship_date": "Ship Date",
+			"delivery_date": "Delivery Date",
+			"weight": "Weight",
+			"mode": "Mode"
+		}
+	},
+	"mode_mapping": {
+		"AMBIENT": "Dry Van 53'",
+		"REFRIGERATED": "Reefer 53'",
+		"FREEZER": "Reefer 53'",
+		"unmapped": "Contact Operator"
+	}
+}

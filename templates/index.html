@@ -1,0 +1,121 @@
+<!doctype html>
+<!-- Operations dashboard for fetching and pushing Walmart freight loads. -->
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{{ constants.app.name }}</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Manrope:wght@600;700;800&display=swap">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+  </head>
+  <body>
+    <main class="shell">
+      <header class="app-header">
+        <div class="brand-lockup">
+          <span class="brand-mark" aria-hidden="true">SHV</span>
+          <div>
+            <p class="eyebrow">{{ constants.ui.eyebrow }}</p>
+            <p class="header-note">{{ constants.ui.header_note }}</p>
+          </div>
+        </div>
+      </header>
+
+      <section class="hero" aria-labelledby="page-title">
+        <span class="hero-accent" aria-hidden="true"></span>
+        <div>
+          <h1 id="page-title">{{ constants.app.name }}</h1>
+          <p class="intro">{{ constants.app.description }}</p>
+        </div>
+      </section>
+
+      <section class="toolbar" aria-label="Load actions">
+        <div class="toolbar-actions">
+          <button id="fetch-button" class="button button-primary" type="button">
+            <svg class="button-icon" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M10 3v9m0 0-3.5-3.5M10 12l3.5-3.5M4 14.5v1a1.5 1.5 0 0 0 1.5 1.5h9a1.5 1.5 0 0 0 1.5-1.5v-1" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            <span>{{ constants.actions.fetch_loads }}</span>
+          </button>
+          <button id="push-button" class="button button-secondary" type="button" disabled>
+            <svg class="button-icon" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M10 17V8m0 0-3.5 3.5M10 8l3.5 3.5M4 5.5v-1A1.5 1.5 0 0 1 5.5 3h9A1.5 1.5 0 0 1 16 4.5v1" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            <span>{{ constants.actions.sanitize_push }}</span>
+          </button>
+        </div>
+        <div class="toolbar-status">
+          <div class="workflow-help">
+            <button class="info-button" type="button" aria-label="{{ constants.ui.help_label }}" aria-describedby="workflow-tooltip">i</button>
+            <div id="workflow-tooltip" class="workflow-tooltip" role="tooltip">
+              <strong>{{ constants.ui.help_label }}</strong>
+              <ol>
+                {% for step in constants.ui.workflow_steps %}
+                <li>{{ step }}</li>
+                {% endfor %}
+              </ol>
+            </div>
+          </div>
+          <p id="status" class="status" role="status"></p>
+        </div>
+      </section>
+
+      <section class="summary" aria-label="Load summary">
+        <div class="summary-card summary-card--fetched">
+          <span class="summary-icon" aria-hidden="true"><svg viewBox="0 0 20 20" fill="none"><path d="M4 6h12M4 10h12M4 14h8" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></span>
+          <div><strong id="fetched-count">0</strong><span>{{ constants.ui.fetched }}</span></div>
+        </div>
+        <div class="summary-card summary-card--sanitized">
+          <span class="summary-icon" aria-hidden="true"><svg viewBox="0 0 20 20" fill="none"><path d="M4 10.5 8 14l8-8" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+          <div><strong id="sanitized-count">0</strong><span>{{ constants.ui.sanitized }}</span></div>
+        </div>
+        <div class="summary-card summary-card--pushed">
+          <span class="summary-icon" aria-hidden="true"><svg viewBox="0 0 20 20" fill="none"><path d="M10 15V5m0 0L6 9m4-4 4 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+          <div><strong id="pushed-count">0</strong><span>{{ constants.ui.pushed }}</span></div>
+        </div>
+        <div class="summary-card summary-card--rejected">
+          <span class="summary-icon" aria-hidden="true"><svg viewBox="0 0 20 20" fill="none"><path d="M6 6l8 8M14 6l-8 8" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></span>
+          <div><strong id="rejected-count">0</strong><span>{{ constants.ui.rejected }}</span></div>
+        </div>
+      </section>
+
+      <section class="loads-panel" aria-labelledby="loads-heading">
+        <div class="section-heading">
+          <div>
+            <h2 id="loads-heading">{{ constants.ui.records_title }}</h2>
+            <p class="section-note">{{ constants.ui.records_note }}</p>
+          </div>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>{{ constants.ui.columns.load }}</th>
+                <th>{{ constants.ui.columns.freight_order }}</th>
+                <th>{{ constants.ui.columns.shipper }}</th>
+                <th>{{ constants.ui.columns.origin_city }}</th>
+                <th>{{ constants.ui.columns.origin_state }}</th>
+                <th>{{ constants.ui.columns.destination_city }}</th>
+                <th>{{ constants.ui.columns.destination_state }}</th>
+                <th>{{ constants.ui.columns.ship_date }}</th>
+                <th>{{ constants.ui.columns.delivery_date }}</th>
+                <th>{{ constants.ui.columns.weight }}</th>
+                <th>{{ constants.ui.columns.mode }}</th>
+              </tr>
+            </thead>
+            <tbody id="loads-body">
+              <tr><td colspan="11" class="empty">{{ constants.ui.empty_state }}</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section id="feedback" class="feedback" aria-live="polite" hidden>
+        <div class="feedback-heading-row">
+          <h2 id="feedback-heading">{{ constants.ui.results_heading }}</h2>
+          <span id="feedback-summary" class="result-summary-badge"></span>
+        </div>
+        <div id="feedback-results" class="result-list"></div>
+      </section>
+    </main>
+    <script id="app-config" type="application/json">{{ constants | tojson }}</script>
+    <script src="{{ url_for('static', filename='app.js') }}"></script>
+  </body>
+</html>
+
